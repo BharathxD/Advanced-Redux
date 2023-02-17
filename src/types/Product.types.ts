@@ -4,3 +4,7 @@ export interface IProductItems {
   price: number;
   description: string;
 }
+
+export interface IProductItemsState {
+  items: IProductItems[];
+}

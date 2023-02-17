@@ -33,7 +33,7 @@ const CartItem: React.FC<ICartItemProps> = ({ items }) => {
       </header>
       <div className={classes.details}>
         <div className={classes.quantity}>
-          x <span>{items.quantity}</span>
+          <span>{items.quantity}</span>
         </div>
         <div className={classes.actions}>
           <button onClick={onDecrementHandler}>-</button>

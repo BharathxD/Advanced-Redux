@@ -26,6 +26,14 @@
   align-items: center;
 }
 
+.quantity {
+  background-color: #ffffff41;
+  padding: 5px;
+  width: 30px;
+  text-align: center;
+  border-radius: 10px;
+}
+
 .quantity span {
   font-size: 1.5rem;
   font-weight: bold;
@@ -52,7 +60,10 @@
   background-color: transparent;
   border: 1px solid white;
   margin-left: 0.5rem;
-  padding: 0.15rem 1rem;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 700;
+  width: 30px;
   color: white;
 }
 
