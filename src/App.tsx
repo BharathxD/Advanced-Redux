@@ -6,11 +6,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { ICartItem, ICartItemState } from "./types/Cart.types";
 import { Fragment, useEffect } from "react";
 import Notification from "./components/UI/Notification";
-import { cartReducer } from "./store";
+import { sendCartData } from "./store/Cart";
 
 interface ICartItemType {
   CartItem: ICartItemState;
 }
+
+let isInitial = true;
 
 function App() {
   const showCart: boolean = useSelector(
@@ -24,44 +26,14 @@ function App() {
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    const sendCartData = async () => {
-      dispatch(
-        cartReducer.showNotification({
-          status: "Pending",
-          title: "Sending...",
-          message: "Sending Cart Data",
-        })
-      );
-      try {
-        const response = await fetch(
-          "https://star-wars-f4c01-default-rtdb.firebaseio.com/Cart.json",
-          {
-            method: "PUT",
-            body: JSON.stringify(cart),
-          }
-        );
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error("Error Sending the Data");
-        }
-        dispatch(
-          cartReducer.showNotification({
-            status: "success",
-            title: "Success!!",
-            message: "Successfully saved the Cart Data",
-          })
-        );
-      } catch (e) {
-        dispatch(
-          cartReducer.showNotification({
-            status: "error",
-            title: "Something went Wrong",
-            message: "The cart data couldn't be saved",
-          })
-        );
-      }
+    if (isInitial) {
+      isInitial = false;
+      return;
+    }
+    const sendData = async () => {
+      dispatch(await sendCartData(cart)(dispatch));
     };
-    sendCartData();
+    sendData();
   }, [cart, dispatch]);
   return (
     <Fragment>

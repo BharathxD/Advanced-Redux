@@ -1,10 +1,18 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {
+  AnyAction,
+  Dispatch,
+  PayloadAction,
+  createSlice,
+} from "@reduxjs/toolkit";
+
 import {
   ICartItemState,
   ICartItemPayload,
   ICartItem,
   ICartNotifcationPayload,
+  AppThunk,
 } from "../types/Cart.types";
+import { cartReducer } from ".";
 
 const cartInitialState: ICartItemState = {
   items: [],
@@ -63,5 +71,51 @@ const Cart = createSlice({
     },
   },
 });
+
+export const sendCartData = (cartData: ICartItem[]) => {
+  return async (dispatch: Dispatch<AnyAction>) => {
+    dispatch(
+      cartReducer.showNotification({
+        status: "Pending",
+        title: "Sending...",
+        message: "Sending Cart Data",
+      })
+    );
+    const sendRequest = async () => {
+      const response = await fetch(
+        "https://star-wars-f4c01-default-rtdb.firebaseio.com/Cart.json",
+        {
+          method: "PUT",
+          body: JSON.stringify(cartData),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Error Sending the Data");
+      }
+    };
+
+    try {
+      await sendRequest();
+      dispatch(
+        Cart.actions.showNotification({
+          status: "success",
+          title: "Success!!",
+          message: "Successfully saved the Cart Data",
+        })
+      );
+      return { type: "SEND_CART_DATA_SUCCESS" };
+    } catch (e) {
+      dispatch(
+        Cart.actions.showNotification({
+          status: "error",
+          title: "Something went Wrong",
+          message: "The cart data couldn't be saved",
+        })
+      );
+      return { type: "SEND_CART_DATA_ERROR" };
+    }
+  };
+};
 
 export default Cart;
