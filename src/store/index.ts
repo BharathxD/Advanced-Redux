@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 
 const productInitialState = {
@@ -16,14 +16,38 @@ const productInitialState = {
   ],
 };
 
-const cartInitialState = {
+interface ICartItemState {
   items: [
     {
-      id: 1,
-      title: "Test Item",
+      id: number;
+      title: string;
+      quantity: number;
+      total: number;
+      price: number;
+    }
+  ];
+  showCart: boolean;
+}
+
+interface ICartItemPayload {
+  items?: {
+    id: number;
+    title: string;
+    quantity: number;
+    total: number;
+    price: number;
+  };
+  itemID?: number;
+}
+
+const cartInitialState: ICartItemState = {
+  items: [
+    {
+      id: 0,
+      title: "",
       quantity: 0,
       total: 0,
-      price: 6,
+      price: 0,
     },
   ],
   showCart: false,
@@ -33,17 +57,17 @@ const cartItems = createSlice({
   name: "CartItem",
   initialState: cartInitialState,
   reducers: {
-    increment(state, action) {
+    increment(state: ICartItemState, action: PayloadAction<ICartItemPayload>) {
       const index = state.items.findIndex(
-        (item: { id: number }) => item.id === action.payload.id
+        (item: { id: number }) => item.id === action.payload.itemID
       );
       state.items[index].quantity = state.items[index].quantity + 1;
       state.items[index].total =
         state.items[index].price * state.items[index].quantity;
     },
-    decrement(state, action) {
+    decrement(state, action: PayloadAction<ICartItemPayload>) {
       const index = state.items.findIndex(
-        (item: { id: number }) => item.id === action.payload.id
+        (item: { id: number }) => item.id === action.payload.itemID
       );
       if (state.items[index].quantity <= 0) {
         return;
@@ -55,8 +79,11 @@ const cartItems = createSlice({
     toggleCart(state) {
       state.showCart = !state.showCart;
     },
-    addToCart(state, action) {
-      state.items.push(action.payload.items);
+    addToCart(state, action: PayloadAction<ICartItemPayload>) {
+      const newItem = action.payload.items;
+      if (newItem) {
+        state.items.push(newItem);
+      }
     },
   },
 });

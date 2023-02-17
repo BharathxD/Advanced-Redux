@@ -25,7 +25,7 @@ const Cart: React.FC = () => {
       <h2>Your Shopping Cart</h2>
       <ul>
         {items.map((item) => {
-          return <CartItem items={item} />;
+          return (<CartItem items={item} />);
         })}
       </ul>
     </Card>
