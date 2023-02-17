@@ -4,7 +4,7 @@ import { cartReducer } from "../../store";
 
 interface ICartItemProps {
   items: {
-    id: number
+    id: number;
     title: string;
     quantity: number;
     total: number;

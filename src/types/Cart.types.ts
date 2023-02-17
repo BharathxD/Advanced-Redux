@@ -1,17 +1,17 @@
-export interface ICartItemType {
+export interface ICartItem {
   id: number;
   title: string;
   quantity: number;
-  total: number;
   price: number;
+  total: number;
 }
 
 export interface ICartItemState {
-  items: Array<ICartItemType> | Array<any>;
+  items: Array<ICartItem> | Array<any>;
   showCart: boolean;
 }
 
 export interface ICartItemPayload {
-  items?: ICartItemType;
+  items?: ICartItem;
   itemID?: number;
 }

@@ -26,11 +26,11 @@ const Cart: React.FC = () => {
   return (
     <Card className={classes.cart}>
       {items.length !== 0 && (
-          <ul>
-            {items.map((item) => {
-              return <CartItem items={item} key={item.id} />;
-            })}
-          </ul>
+        <ul>
+          {items.map((item) => {
+            return <CartItem items={item} key={item.id} />;
+          })}
+        </ul>
       )}
       {items.length === 0 && (
         <p className={classes.empty}>

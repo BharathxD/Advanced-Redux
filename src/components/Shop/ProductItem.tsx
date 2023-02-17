@@ -1,6 +1,6 @@
 import Card from "../UI/Card";
 import classes from "./ProductItem.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartReducer } from "../../store";
 import { ICartItem } from "../../types/Cart.types";
 
@@ -11,13 +11,19 @@ interface IProductItem {
   description: string;
 }
 
+interface ICartItemStateType {
+  CartItem: { items: ICartItem[] };
+}
+
 const ProductItem: React.FC<IProductItem> = ({
   id,
   title,
   price,
   description,
 }) => {
+  const cart = useSelector((state: ICartItemStateType) => state.CartItem.items);
   const dispatch = useDispatch();
+
   const addToCartHandler = () => {
     const item: ICartItem = {
       id: id,
@@ -25,13 +31,25 @@ const ProductItem: React.FC<IProductItem> = ({
       quantity: 1,
       price: price,
       total: price,
-    }
+    };
     dispatch(
       cartReducer.addToCart({
         items: item,
       })
     );
+
+    // and then send Http request
+    // fetch('firebase-url', { method: 'POST', body: JSON.stringify(newCart) })
+
+    // dispatch(
+    //   cartActions.addItemToCart({
+    //     id,
+    //     title,
+    //     price,
+    //   })
+    // );
   };
+  // };
   return (
     <li className={classes.item} key={id}>
       <Card>
