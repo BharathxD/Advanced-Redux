@@ -1,11 +1,15 @@
-import { Fragment } from 'react';
-import MainHeader from './MainHeader';
+import { Fragment } from "react";
+import MainHeader from "./MainHeader";
 
-const Layout = (props) => {
+interface ILayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<ILayoutProps> = ({ children }) => {
   return (
     <Fragment>
       <MainHeader />
-      <main>{props.children}</main>
+      <main>{children}</main>
     </Fragment>
   );
 };

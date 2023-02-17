@@ -1,7 +1,7 @@
 import ProductItem from './ProductItem';
 import classes from './Products.module.css';
 
-const Products = () => {
+const Products: React.FC = () => {
   return (
     <section className={classes.products}>
       <h2>Buy your favorite products</h2>

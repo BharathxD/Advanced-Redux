@@ -1,8 +1,13 @@
 import Card from '../UI/Card';
 import classes from './ProductItem.module.css';
 
-const ProductItem = (props) => {
-  const { title, price, description } = props;
+interface IProductItem {
+  title: string;
+  price: number;
+  description: string
+}
+
+const ProductItem: React.FC<IProductItem> = ({title, price, description}) => {
 
   return (
     <li className={classes.item}>

@@ -1,11 +1,14 @@
-import classes from './Card.module.css';
+import classes from "./Card.module.css";
 
-const Card = (props) => {
+interface ICardProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const Card: React.FC<ICardProps> = ({ className, children }) => {
   return (
-    <section
-      className={`${classes.card} ${props.className ? props.className : ''}`}
-    >
-      {props.children}
+    <section className={`${classes.card} ${className ? className : ""}`}>
+      {children}
     </section>
   );
 };
