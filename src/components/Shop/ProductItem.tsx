@@ -24,7 +24,6 @@ const ProductItem: React.FC<IProductItem> = ({
       quantity: 1,
       price: price,
       total: price,
-      description: description,
     }
     dispatch(
       cartItemReducer.addToCart({

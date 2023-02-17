@@ -17,15 +17,14 @@ const productInitialState = {
 };
 
 interface ICartItemState {
-  items: [
-    {
-      id: number;
-      title: string;
-      quantity: number;
-      total: number;
-      price: number;
-    }
-  ];
+  items: Array<{
+        id: number;
+        title: string;
+        quantity: number;
+        total: number;
+        price: number;
+      }>
+    | Array<any>;
   showCart: boolean;
 }
 
@@ -41,15 +40,7 @@ interface ICartItemPayload {
 }
 
 const cartInitialState: ICartItemState = {
-  items: [
-    {
-      id: 0,
-      title: "",
-      quantity: 0,
-      total: 0,
-      price: 0,
-    },
-  ],
+  items: [],
   showCart: false,
 };
 
@@ -82,7 +73,16 @@ const cartItems = createSlice({
     addToCart(state, action: PayloadAction<ICartItemPayload>) {
       const newItem = action.payload.items;
       if (newItem) {
-        state.items.push(newItem);
+        const existingCartItemIndex = state.items.findIndex(
+          (item: { id: number }) => item.id === action.payload.items?.id
+        );
+        const existingCartItem = state.items[existingCartItemIndex];
+
+        if (existingCartItem) {
+          return;
+        } else {
+          state.items.push(newItem);
+        }
       }
     },
   },
