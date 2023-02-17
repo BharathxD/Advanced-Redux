@@ -1,8 +1,11 @@
 .products h2 {
-  color: white;
   margin: 2rem auto;
   text-align: center;
-  text-transform: uppercase;
+  color: #f4f4f4;
+  border-radius: 10px;
+  width: fit-content;
+  padding: 10px;
+  border: 1px solid #ffffff41;
 }
 
 .products ul {
