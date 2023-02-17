@@ -1,16 +1,21 @@
-import Card from '../UI/Card';
-import classes from './ProductItem.module.css';
+import Card from "../UI/Card";
+import classes from "./ProductItem.module.css";
 
 interface IProductItem {
+  productid: number;
   title: string;
   price: number;
-  description: string
+  description: string;
 }
 
-const ProductItem: React.FC<IProductItem> = ({title, price, description}) => {
-
+const ProductItem: React.FC<IProductItem> = ({
+  productid,
+  title,
+  price,
+  description,
+}) => {
   return (
-    <li className={classes.item}>
+    <li className={classes.item} key={productid}>
       <Card>
         <header>
           <h3>{title}</h3>
