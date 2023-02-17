@@ -1,0 +1,26 @@
+.notification {
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+  padding: 0.5rem 10%;
+  align-items: center;
+  color: white;
+}
+
+.notification h2,
+.notification p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.error {
+  background-color: rgba(212, 0, 0, 0.45);
+  border: 1px solid red;
+}
+
+.success {
+  color: #fff;
+  background-color: rgba(144, 238, 144, 0.528);
+  border: 1px solid lightgreen;
+}

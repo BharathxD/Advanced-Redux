@@ -3,11 +3,13 @@ import {
   ICartItemState,
   ICartItemPayload,
   ICartItem,
+  ICartNotifcationPayload,
 } from "../types/Cart.types";
 
 const cartInitialState: ICartItemState = {
   items: [],
   showCart: false,
+  notification: null,
 };
 
 const Cart = createSlice({
@@ -50,6 +52,13 @@ const Cart = createSlice({
         existingCartItem.total =
           existingCartItem.total + existingCartItem.price;
       }
+    },
+    showNotification(state, action: PayloadAction<ICartNotifcationPayload>) {
+      state.notification = {
+        status: action.payload.status,
+        title: action.payload.title,
+        message: action.payload.message,
+      };
     },
   },
 });
