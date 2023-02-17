@@ -17,7 +17,8 @@ const productInitialState = {
 };
 
 interface ICartItemState {
-  items: Array<{
+  items:
+    | Array<{
         id: number;
         title: string;
         quantity: number;
@@ -71,18 +72,22 @@ const cartItems = createSlice({
       state.showCart = !state.showCart;
     },
     addToCart(state, action: PayloadAction<ICartItemPayload>) {
+      if (!action.payload.items) return;
       const newItem = action.payload.items;
-      if (newItem) {
-        const existingCartItemIndex = state.items.findIndex(
-          (item: { id: number }) => item.id === action.payload.items?.id
-        );
-        const existingCartItem = state.items[existingCartItemIndex];
-
-        if (existingCartItem) {
-          return;
-        } else {
-          state.items.push(newItem);
-        }
+      const existingCartItem = state.items.find(
+        (item: {
+          id: number;
+          title: string;
+          quantity: number;
+          total: number;
+          price: number;
+        }) => item.id === newItem.id
+      );
+      if (!existingCartItem) {
+        state.items.push(newItem);
+      } else {
+        existingCartItem.quantity++;
+        existingCartItem.total = existingCartItem.total + existingCartItem.price;
       }
     },
   },
