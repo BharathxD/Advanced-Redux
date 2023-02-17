@@ -1,6 +1,6 @@
 import classes from "./CartItem.module.css";
 import { useDispatch } from "react-redux";
-import { cartItemReducer } from "../../store";
+import { cartReducer } from "../../store";
 
 interface ICartItemProps {
   items: {
@@ -15,10 +15,10 @@ interface ICartItemProps {
 const CartItem: React.FC<ICartItemProps> = ({ items }) => {
   const dispatch = useDispatch();
   const onIncrementHandler = () => {
-    dispatch(cartItemReducer.increment({ itemID: items.id }));
+    dispatch(cartReducer.increment({ itemID: items.id }));
   };
   const onDecrementHandler = () => {
-    dispatch(cartItemReducer.decrement({ itemID: items.id }));
+    dispatch(cartReducer.decrement({ itemID: items.id }));
   };
   return (
     <li className={classes.item} key={items.id.toString()}>

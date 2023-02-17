@@ -1,30 +1,25 @@
 import ProductItem from "./ProductItem";
 import classes from "./Products.module.css";
 import { useSelector } from "react-redux";
+import { IProductItems } from "../../types/Product.types";
 
-interface Items {
-  id: number;
-  title: string;
-  price: number;
-}
-
-interface IProductItems {
+interface IProductItemsFunction {
   ProductItem: {
-    items: Items[];
+    items: IProductItems[];
   };
 }
 
 const Products: React.FC = () => {
-  const productItems: Items[] = useSelector(
-    (state: IProductItems) => state.ProductItem.items
+  const productItems: IProductItems[] = useSelector(
+    (state: IProductItemsFunction) => state.ProductItem.items
   );
-  const items = (productItems as Items[]).map((items) => {
+  const items = productItems.map((items) => {
     return (
       <ProductItem
-        productid={items.id}
+        id={items.id}
         title={items.title}
         price={items.price}
-        description="This is a first product - amazing!"
+        description={items.description}
         key={items.id}
       />
     );

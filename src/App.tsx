@@ -5,7 +5,7 @@ import Layout from "./components/Layout/Layout";
 import { useSelector } from "react-redux";
 
 function App() {
-  const showCart = useSelector(
+  const showCart: boolean = useSelector(
     (state: { CartItem: { showCart: boolean } }) => state.CartItem.showCart
   );
   return (

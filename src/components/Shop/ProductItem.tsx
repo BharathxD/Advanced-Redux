@@ -1,38 +1,39 @@
 import Card from "../UI/Card";
 import classes from "./ProductItem.module.css";
 import { useDispatch } from "react-redux";
-import { cartItemReducer } from "../../store";
+import { cartReducer } from "../../store";
+import { ICartItem } from "../../types/Cart.types";
 
 interface IProductItem {
-  productid: number;
+  id: number;
   title: string;
   price: number;
   description: string;
 }
 
 const ProductItem: React.FC<IProductItem> = ({
-  productid,
+  id,
   title,
   price,
   description,
 }) => {
   const dispatch = useDispatch();
   const addToCartHandler = () => {
-    const item = {
-      id: productid,
+    const item: ICartItem = {
+      id: id,
       title: title,
       quantity: 1,
       price: price,
       total: price,
     }
     dispatch(
-      cartItemReducer.addToCart({
+      cartReducer.addToCart({
         items: item,
       })
     );
   };
   return (
-    <li className={classes.item} key={productid}>
+    <li className={classes.item} key={id}>
       <Card>
         <header>
           <h3>{title}</h3>

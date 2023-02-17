@@ -3,6 +3,7 @@ import Card from "../UI/Card";
 import classes from "./Cart.module.css";
 import CartItem from "./CartItem";
 import { useSelector, useDispatch } from "react-redux";
+import { ICartItem } from "../../types/Cart.types";
 
 type itemsType = {
   CartItem: {
@@ -19,13 +20,15 @@ type itemsType = {
 };
 
 const Cart: React.FC = () => {
-  const items = useSelector((state: itemsType) => state.CartItem.items);
+  const items: ICartItem[] = useSelector(
+    (state: itemsType) => state.CartItem.items
+  );
   return (
     <Card className={classes.cart}>
       <h2>Your Shopping Cart</h2>
       <ul>
         {items.map((item) => {
-          return (<CartItem items={item} key={item.id}/>);
+          return <CartItem items={item} key={item.id} />;
         })}
       </ul>
     </Card>

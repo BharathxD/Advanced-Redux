@@ -1,12 +1,12 @@
 import CartButton from "../Cart/CartButton";
 import classes from "./MainHeader.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { cartItemReducer } from "../../store";
+import { cartReducer } from "../../store";
 
 const MainHeader: React.FC = () => {
   const dispatch = useDispatch();
   const cartClickHandler = () => {
-    dispatch(cartItemReducer.toggleCart());
+    dispatch(cartReducer.toggleCart());
   };
   return (
     <header className={classes.header}>
