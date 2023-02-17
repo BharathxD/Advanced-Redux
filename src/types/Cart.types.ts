@@ -21,5 +21,4 @@ export interface ICartItemState {
 export interface ICartItemPayload {
   items?: ICartItem;
   itemID?: number;
-  notification?: ICartNotifcationPayload | null;
 }

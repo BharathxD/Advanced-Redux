@@ -21,12 +21,7 @@ const Notification: React.FC<INotificationProps> = (props) => {
   return (
     <section className={cssClasses}>
       <h2>{props.title}</h2>
-      <p>
-        {props.message}
-        <span>
-          <button>X</button>
-        </span>
-      </p>
+      <p>{props.message}</p>
     </section>
   );
 };

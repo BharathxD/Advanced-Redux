@@ -54,6 +54,7 @@ const Cart = createSlice({
       }
     },
     showNotification(state, action: PayloadAction<ICartNotifcationPayload>) {
+      if (!action.payload) return;
       state.notification = {
         status: action.payload.status,
         title: action.payload.title,
