@@ -32,7 +32,12 @@ function App() {
     const sendData = async () => {
       dispatch(await fetchCartData()(dispatch));
     };
-    sendData();
+    const timeout = setTimeout(() => {
+      sendData();
+    }, 500);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [dispatch]);
   useEffect(() => {
     const sendData = async () => {
