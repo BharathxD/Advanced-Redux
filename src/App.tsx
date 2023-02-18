@@ -3,7 +3,7 @@ import Cart from "./components/Cart/Cart";
 import Products from "./components/Shop/Products";
 import Layout from "./components/Layout/Layout";
 import { useSelector, useDispatch } from "react-redux";
-import { ICartItem, ICartItemState } from "./types/Cart.types";
+import { ICartItemState } from "./types/Cart.types";
 import { Fragment, useEffect } from "react";
 import Notification from "./components/UI/Notification";
 import { sendCartData, fetchCartData } from "./store/CartActions";
@@ -12,45 +12,30 @@ interface ICartItemType {
   CartItem: ICartItemState;
 }
 
-let isInitial = true;
-
 function App() {
-  const showCart: boolean = useSelector(
-    (state: ICartItemType) => state.CartItem.showCart
-  );
-  const cart: ICartItem[] = useSelector(
-    (state: ICartItemType) => state.CartItem.items
-  );
-  const cartChanged: boolean = useSelector(
-    (state: ICartItemType) => state.CartItem.changed
-  );
-  const notification = useSelector(
-    (state: ICartItemType) => state.CartItem.notification
-  );
+  const {
+    showCart,
+    items: cart,
+    changed: cartChanged,
+    notification,
+  } = useSelector((state: ICartItemType) => state.CartItem);
+
   const dispatch = useDispatch();
+
   useEffect(() => {
-    const sendData = async () => {
-      dispatch(await fetchCartData()(dispatch));
+    const fetchData = async () => {
+      await fetchCartData()(dispatch);
     };
-    const timeout = setTimeout(() => {
-      sendData();
-    }, 500);
-    return () => {
-      clearTimeout(timeout);
-    };
+    fetchData();
   }, [dispatch]);
+
   useEffect(() => {
     const sendData = async () => {
-      dispatch(await sendCartData(cart)(dispatch));
+      await sendCartData(cart)(dispatch);
     };
-    if (isInitial) {
-      isInitial = false;
-      return;
-    }
-    if (cartChanged) {
-      sendData();
-    }
+    if (cartChanged) sendData();
   }, [cart, dispatch]);
+
   return (
     <Fragment>
       {notification && (
@@ -60,10 +45,7 @@ function App() {
           status={notification.status}
         />
       )}
-      <Layout>
-        {showCart && <Cart />}
-        {!showCart && <Products />}
-      </Layout>
+      <Layout>{showCart ? <Cart /> : <Products />}</Layout>
     </Fragment>
   );
 }

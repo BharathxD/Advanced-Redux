@@ -2,15 +2,25 @@ import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import { ICartItem } from "../types/Cart.types";
 import { cartReducer } from ".";
 
+const sendNotification = (status: string, title: string, message: string) => {
+  return cartReducer.showNotification({
+    status,
+    title,
+    message,
+  });
+};
+
+const sendSuccessAction = () => {
+  return { type: "SEND_CART_DATA_SUCCESS" };
+};
+
+const sendErrorAction = () => {
+  return { type: "SEND_CART_DATA_ERROR" };
+};
+
 export const sendCartData = (cartData: ICartItem[]) => {
   return async (dispatch: Dispatch<AnyAction>) => {
-    dispatch(
-      cartReducer.showNotification({
-        status: "Pending",
-        title: "Sending...",
-        message: "Sending Cart Data",
-      })
-    );
+    dispatch(sendNotification("Pending", "Sending...", "Sending Cart Data"));
     const sendRequest = async () => {
       const response = await fetch(
         "https://star-wars-f4c01-default-rtdb.firebaseio.com/Cart.json",
@@ -27,35 +37,29 @@ export const sendCartData = (cartData: ICartItem[]) => {
     try {
       await sendRequest();
       dispatch(
-        cartReducer.showNotification({
-          status: "success",
-          title: "Success!!",
-          message: "Successfully saved the Cart Data",
-        })
+        sendNotification(
+          "success",
+          "Success!!",
+          "Successfully saved the Cart Data"
+        )
       );
-      return { type: "SEND_CART_DATA_SUCCESS" };
+      dispatch(sendSuccessAction());
     } catch (e) {
       dispatch(
-        cartReducer.showNotification({
-          status: "error",
-          title: "Something went Wrong",
-          message: "The cart data couldn't be saved",
-        })
+        sendNotification(
+          "error",
+          "Something went Wrong",
+          "The cart data couldn't be saved"
+        )
       );
-      return { type: "SEND_CART_DATA_ERROR" };
+      dispatch(sendErrorAction());
     }
   };
 };
 
 export const fetchCartData = () => {
   return async (dispatch: Dispatch<AnyAction>) => {
-    dispatch(
-      cartReducer.showNotification({
-        status: "Pending",
-        title: "Sending...",
-        message: "Fetching Cart Data",
-      })
-    );
+    dispatch(sendNotification("Pending", "Sending...", "Fetching Cart Data"));
     const sendRequest = async () => {
       const response = await fetch(
         "https://star-wars-f4c01-default-rtdb.firebaseio.com/Cart.json",
@@ -80,7 +84,10 @@ export const fetchCartData = () => {
             items: {
               id: data[key].id,
               title: data[key].title,
-              quantity: --data[key].quantity,
+              quantity:
+                data[key].quantity > 1
+                  ? --data[key].quantity
+                  : data[key].quantity,
               price: data[key].price,
               total: data[key].total,
             },
@@ -89,22 +96,22 @@ export const fetchCartData = () => {
       }
 
       dispatch(
-        cartReducer.showNotification({
-          status: "success",
-          title: "Success!!",
-          message: "Successfully fetched the Cart Data",
-        })
+        sendNotification(
+          "success",
+          "Success!!",
+          "Successfully fetched the Cart Data"
+        )
       );
-      return { type: "SEND_CART_DATA_SUCCESS" };
+      dispatch(sendSuccessAction());
     } catch (e) {
       dispatch(
-        cartReducer.showNotification({
-          status: "error",
-          title: "Something went Wrong",
-          message: "The cart data couldn't be fetched",
-        })
+        sendNotification(
+          "error",
+          "Something went Wrong",
+          "The cart data couldn't be fetched"
+        )
       );
-      return { type: "SEND_CART_DATA_ERROR" };
+      dispatch(sendErrorAction());
     }
   };
 };
