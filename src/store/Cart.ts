@@ -1,23 +1,17 @@
-import {
-  AnyAction,
-  Dispatch,
-  PayloadAction,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import {
   ICartItemState,
   ICartItemPayload,
   ICartItem,
   ICartNotifcationPayload,
-  AppThunk,
 } from "../types/Cart.types";
-import { cartReducer } from ".";
 
 const cartInitialState: ICartItemState = {
   items: [],
   showCart: false,
   notification: null,
+  changed: false,
 };
 
 const Cart = createSlice({
@@ -31,6 +25,7 @@ const Cart = createSlice({
       const item: ICartItem = state.items[index];
       item.quantity = item.quantity + 1;
       item.total = item.price * item.quantity;
+      state.changed = true;
     },
     decrement(state, action: PayloadAction<ICartItemPayload>) {
       const index = state.items.findIndex(
@@ -43,12 +38,14 @@ const Cart = createSlice({
       }
       item.quantity = item.quantity - 1;
       item.total = item.price * item.quantity;
+      state.changed = true;
     },
     toggleCart(state) {
       state.showCart = !state.showCart;
     },
     addToCart(state, action: PayloadAction<ICartItemPayload>) {
       if (!action.payload.items) return;
+      state.changed = true;
       const newItem: ICartItem = action.payload.items;
       const existingCartItem: ICartItem = state.items.find(
         (item: ICartItem) => item.id === newItem.id
@@ -71,51 +68,5 @@ const Cart = createSlice({
     },
   },
 });
-
-export const sendCartData = (cartData: ICartItem[]) => {
-  return async (dispatch: Dispatch<AnyAction>) => {
-    dispatch(
-      cartReducer.showNotification({
-        status: "Pending",
-        title: "Sending...",
-        message: "Sending Cart Data",
-      })
-    );
-    const sendRequest = async () => {
-      const response = await fetch(
-        "https://star-wars-f4c01-default-rtdb.firebaseio.com/Cart.json",
-        {
-          method: "PUT",
-          body: JSON.stringify(cartData),
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error("Error Sending the Data");
-      }
-    };
-
-    try {
-      await sendRequest();
-      dispatch(
-        Cart.actions.showNotification({
-          status: "success",
-          title: "Success!!",
-          message: "Successfully saved the Cart Data",
-        })
-      );
-      return { type: "SEND_CART_DATA_SUCCESS" };
-    } catch (e) {
-      dispatch(
-        Cart.actions.showNotification({
-          status: "error",
-          title: "Something went Wrong",
-          message: "The cart data couldn't be saved",
-        })
-      );
-      return { type: "SEND_CART_DATA_ERROR" };
-    }
-  };
-};
 
 export default Cart;

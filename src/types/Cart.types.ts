@@ -20,6 +20,7 @@ export interface ICartItemState {
   items: Array<ICartItem> | Array<any>;
   showCart: boolean;
   notification: ICartNotifcationPayload | null;
+  changed: boolean;
 }
 
 export interface ICartItemPayload {
