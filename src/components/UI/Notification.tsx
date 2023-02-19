@@ -6,22 +6,24 @@ interface INotificationProps {
   message: string;
 }
 
-const Notification: React.FC<INotificationProps> = (props) => {
-  let specialClasses = "";
+const Notification: React.FC<INotificationProps> = ({
+  status,
+  title,
+  message,
+}) => {
+  let specialClasses: string = "";
 
-  if (props.status === "error") {
+  if (status === "error") {
     specialClasses = classes.error;
   }
-  if (props.status === "success") {
+  if (status === "success") {
     specialClasses = classes.success;
   }
 
-  const cssClasses = `${classes.notification} ${specialClasses}`;
-
   return (
-    <section className={cssClasses}>
-      <h2>{props.title}</h2>
-      <p>{props.message}</p>
+    <section className={`${classes.notification} ${specialClasses}`}>
+      <h2>{title}</h2>
+      <p>{message}</p>
     </section>
   );
 };
