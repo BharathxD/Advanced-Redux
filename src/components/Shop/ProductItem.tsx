@@ -1,6 +1,6 @@
 import Card from "../UI/Card";
 import classes from "./ProductItem.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { cartReducer } from "../../store";
 import { ICartItem } from "../../types/Cart.types";
 
@@ -21,7 +21,6 @@ const ProductItem: React.FC<IProductItem> = ({
   price,
   description,
 }) => {
-  const cart = useSelector((state: ICartItemStateType) => state.CartItem.items);
   const dispatch = useDispatch();
 
   const addToCartHandler = () => {
@@ -37,19 +36,7 @@ const ProductItem: React.FC<IProductItem> = ({
         items: item,
       })
     );
-
-    // and then send Http request
-    // fetch('firebase-url', { method: 'POST', body: JSON.stringify(newCart) })
-
-    // dispatch(
-    //   cartActions.addItemToCart({
-    //     id,
-    //     title,
-    //     price,
-    //   })
-    // );
   };
-  // };
   return (
     <li className={classes.item} key={id}>
       <Card>

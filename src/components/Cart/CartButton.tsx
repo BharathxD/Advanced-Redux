@@ -1,12 +1,16 @@
 import classes from "./CartButton.module.css";
 import { useSelector } from "react-redux";
 
-const CartButton: React.FC<{ onCartClick(): void }> = (props) => {
+interface ICartButtonState {
+  CartItem: { items: Array<[]> };
+}
+
+const CartButton: React.FC<{ onCartClick(): void }> = ({ onCartClick }) => {
   const cartItemCount: number = useSelector(
-    (state: { CartItem: { items: [] } }) => state.CartItem.items.length
+    (state: ICartButtonState) => state.CartItem.items.length
   );
   return (
-    <button className={classes.button} onClick={props.onCartClick}>
+    <button className={classes.button} onClick={onCartClick}>
       <span>My Cart</span>
       <span className={classes.badge}>{cartItemCount}</span>
     </button>
